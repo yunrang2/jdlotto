@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>죽돌이의 로또</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>죽돌이의 로또</h1>
+        <div id="selectionHeader">
+            <p id="selectionInstruction">숫자 6개 선택</p>
+            <button class="random-button" id="randomButton" onclick="selectRandomNumbers()">랜덤</button>
+        </div>
+        <div id="selectionScreen">
+            <div class="grid">
+                <!-- 1부터 45까지의 숫자를 동적으로 생성 -->
+                <script>
+                    for (let i = 1; i <= 45; i++) {
+                        document.write('<div class="number" onclick="selectNumber(this)">' + i + '</div>');
+                    }
+                </script>
+            </div>
+            <button class="submit-button" onclick="submitNumbers()">제출</button>
+            <p id="selectedNumbers">선택된 숫자: </p>
+        </div>
+        <div id="resultScreen" class="hidden">
+            <h2 id="resultTitle">n회차 당첨결과</h2>
+            <div id="randomNumbers" class="random-numbers"></div>
+            <p>선택한 숫자</p>
+            <div id="userNumbers" class="random-numbers"></div>
+            <div id="bonusGame">
+                <span>보너스 게임 +</span>
+                <div id="bonusNumber" class="random-numbers"></div>
+            </div>
+            <p id="matchResult"></p>
+            <button class="retry-button hidden" onclick="retry()">다시하기</button>
+        </div>
+        <audio id="selectSound" src="https://github.com/yunrang2/upload/raw/master/Coin%201.mp3" volume="0.8"></audio>
+        <audio id="resultSound" src="result-sound.mp3"></audio>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
