@@ -1,17 +1,11 @@
 let selectedNumbers = [];
 let drawCount = 1;
 const selectSound = document.getElementById('selectSound');
-const resultSound = document.getElementById('resultSound');
 
 function playSelectSound() {
     selectSound.currentTime = 0;
     selectSound.volume = 0.8;  // 볼륨을 80%로 설정
     selectSound.play();
-}
-
-function playResultSound() {
-    resultSound.currentTime = 0;
-    resultSound.play();
 }
 
 function selectNumber(element) {
@@ -48,7 +42,10 @@ function selectRandomNumbers() {
         selectedNumbers.push(randomNumber);
 
         // 선택된 숫자에 선택 클래스 추가
-        document.querySelector(`.number:nth-child(${randomNumber})`).classList.add('selected');
+        const numberElement = document.querySelector(`.number:nth-of-type(${randomNumber})`);
+        if (numberElement) {
+            numberElement.classList.add('selected');
+        }
     }
 
     document.getElementById('selectedNumbers').textContent = '선택된 숫자: ' + selectedNumbers.join(', ');
@@ -60,6 +57,7 @@ function submitNumbers() {
         document.getElementById('selectionScreen').classList.add('hidden');
         document.getElementById('selectionInstruction').classList.add('hidden');
         document.getElementById('randomButton').classList.add('hidden');
+        document.getElementById('inputButton').classList.add('hidden');
         document.getElementById('resultScreen').classList.remove('hidden');
         document.getElementById('resultTitle').textContent = `${drawCount}회차 당첨결과`;
         startRandomNumberGeneration();
@@ -122,6 +120,7 @@ function startRandomNumberGeneration() {
                     randomNumbers[currentIndex].classList.add('highlight');
                     userNumbers[selectedNumbers.indexOf(finalNumber)].classList.add('highlight');
                 }
+                randomNumbers[currentIndex].classList.add('number-animate');
                 currentIndex++;
                 generateNumber();
             }, 1000);
@@ -144,6 +143,7 @@ function startRandomNumberGeneration() {
             const finalBonusNumber = parseInt(bonusDiv.textContent);
             generatedNumbers.add(finalBonusNumber);
             bonusDiv.textContent = finalBonusNumber;
+            bonusDiv.classList.add('number-animate');
             checkMatches(finalBonusNumber);
         }, 1000);
     }
@@ -178,7 +178,6 @@ function checkMatches(finalBonusNumber) {
             matchResultText = '꽝!';
     }
     document.getElementById('matchResult').textContent = matchResultText;
-    playResultSound();
     document.querySelector('.retry-button').classList.remove('hidden');
 }
 
@@ -192,6 +191,59 @@ function retry() {
     document.getElementById('selectionScreen').classList.remove('hidden');
     document.getElementById('selectionInstruction').classList.remove('hidden');
     document.getElementById('randomButton').classList.remove('hidden');
+    document.getElementById('inputButton').classList.remove('hidden');
     document.getElementById('resultScreen').classList.add('hidden');
     document.querySelector('.retry-button').classList.add('hidden');
+
+    // 결과 화면 초기화
+    document.getElementById('randomNumbers').innerHTML = '';
+    document.getElementById('userNumbers').innerHTML = '';
+    document.getElementById('bonusNumber').innerHTML = '';
+    document.getElementById('matchResult').textContent = '';
+}
+
+// 팝업 창을 여는 함수
+function showInfo() {
+    document.getElementById('infoPopup').classList.remove('hidden');
+}
+
+// 팝업 창을 닫는 함수
+function closeInfo() {
+    document.getElementById('infoPopup').classList.add('hidden');
+}
+
+// 직접 입력 팝업을 여는 함수
+function showInputPopup() {
+    document.getElementById('inputPopup').classList.remove('hidden');
+}
+
+// 직접 입력 팝업을 닫는 함수
+function closeInputPopup() {
+    document.getElementById('inputPopup').classList.add('hidden');
+}
+
+function submitInputNumbers() {
+    const input = document.getElementById('numberInput').value;
+    const numbers = input.split(',').map(num => parseInt(num.trim())).filter(num => !isNaN(num) && num >= 1 && num <= 45);
+    
+    if (numbers.length !== 6) {
+        alert('6개의 유효한 숫자를 입력해야 합니다.');
+        return;
+    }
+
+    selectedNumbers = numbers;
+
+    // 모든 숫자 요소의 선택 클래스 제거
+    document.querySelectorAll('.number').forEach(el => el.classList.remove('selected'));
+
+    // 선택된 숫자에 선택 클래스 추가
+    selectedNumbers.forEach(num => {
+        const numberElement = document.querySelector(`.number:nth-of-type(${num})`);
+        if (numberElement) {
+            numberElement.classList.add('selected');
+        }
+    });
+
+    document.getElementById('selectedNumbers').textContent = '선택된 숫자: ' + selectedNumbers.join(', ');
+    closeInputPopup();
 }
