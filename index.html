@@ -7,10 +7,25 @@
 </head>
 <body>
     <div class="container">
-        <h1>죽돌이의 로또</h1>
+        <h1>죽돌이의 로또 <button class="info-button" onclick="showInfo()">ⓘ</button></h1>
+        <div id="infoPopup" class="hidden">
+            <div class="info-content">
+                <span class="close-button" onclick="closeInfo()">×</span>
+                <h2>게임 등수 매기는 방법</h2>
+                <ul>
+                    <li>1등: 당첨번호 6개 숫자 일치</li>
+                    <li>2등: 당첨번호 5개 숫자 일치 + 보너스 숫자 일치</li>
+                    <li>3등: 당첨번호 5개 숫자 일치</li>
+                    <li>4등: 당첨번호 4개 숫자 일치</li>
+                    <li>5등: 당첨번호 3개 숫자 일치</li>
+                    <li>나머지는 꽝</li>
+                </ul>
+            </div>
+        </div>
         <div id="selectionHeader">
             <p id="selectionInstruction">숫자 6개 선택</p>
             <button class="random-button" id="randomButton" onclick="selectRandomNumbers()">랜덤</button>
+            <button class="input-button" id="inputButton" onclick="showInputPopup()">직접 입력</button>
         </div>
         <div id="selectionScreen">
             <div class="grid">
@@ -37,7 +52,15 @@
             <button class="retry-button hidden" onclick="retry()">다시하기</button>
         </div>
         <audio id="selectSound" src="https://github.com/yunrang2/upload/raw/master/Coin%201.mp3" volume="0.8"></audio>
-        <audio id="resultSound" src="result-sound.mp3"></audio>
+        <div id="inputPopup" class="hidden">
+            <div class="input-content">
+                <span class="close-button" onclick="closeInputPopup()">×</span>
+                <h2>번호 직접 입력</h2>
+                <p>숫자를 쉼표로 구분하여 입력하세요 (예: 1,2,3,4,5,6)</p>
+                <input type="text" id="numberInput" />
+                <button onclick="submitInputNumbers()">확인</button>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
